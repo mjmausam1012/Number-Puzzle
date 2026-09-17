@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { soundManager } from '../utils/audio';
-import { HowToPlayModal, CertificatesModal, QuitConfirmModal } from './Modals';
-import bgImg from '../assets/bg-img.png';
-import startImg from '../assets/start.png';
-import nebuloidLogo from "../assets/nebuloid-vertical.png";
+import React, { useState } from "react";
+import { soundManager } from "../utils/audio";
+import { HowToPlayModal, CertificatesModal, QuitConfirmModal } from "./Modals";
+import bgImg from "../assets/bg-img.png";
+import startImg from "../assets/start.png";
+import nebuloidLogo from "../assets/logo_black_horizental.png";
 
 export const HomeScreen = ({ onPlayNow, isMuted, onToggleMute }) => {
   const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
@@ -26,29 +26,52 @@ export const HomeScreen = ({ onPlayNow, isMuted, onToggleMute }) => {
             onToggleMute();
           }}
           className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-emerald-950/60 hover:bg-emerald-900/80 border border-white/30 backdrop-blur-md text-white flex items-center justify-center shadow-lg transition-all active:scale-95 cursor-pointer"
-          title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+          title={isMuted ? "Unmute Audio" : "Mute Audio"}
         >
           {!isMuted ? (
-            <svg className="w-5 h-5 text-emerald-100" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z" />
+            <svg
+              className="w-5 h-5 text-emerald-100"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"
+              />
             </svg>
           ) : (
-            <svg className="w-5 h-5 text-red-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+            <svg
+              className="w-5 h-5 text-red-300"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+              />
             </svg>
           )}
         </button>
-      </div>
-
-      <div className="absolute top-6 left-6 z-30">
-        <img src={nebuloidLogo} alt="" className='h-30' />
       </div>
 
       {/* ───────────────────────────────────────────────────────────── */}
       {/* FROSTED GLASS CENTER MODAL / CONTAINER */}
       {/* ───────────────────────────────────────────────────────────── */}
       <div className="relative z-10 w-[94%] sm:w-[90%] max-w-5xl h-[88vh] max-h-[740px] min-h-[520px] rounded-[28px] sm:rounded-[36px] glass-start-card flex flex-col justify-between items-center py-6 sm:py-8 md:py-10 px-4 sm:px-8 text-center animate-fadeIn">
+        <div className="relative top-0">
+          <img src={nebuloidLogo} alt="" className="h-17" />
+        </div>
         {/* Top Header Section */}
         <div className="pt-2 sm:pt-4 space-y-1 sm:space-y-2">
           <div className="text-white/90 text-xs sm:text-sm md:text-base font-semibold tracking-[0.45em] sm:tracking-[0.6em] uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] select-none">
@@ -82,22 +105,6 @@ export const HomeScreen = ({ onPlayNow, isMuted, onToggleMute }) => {
 
         {/* Bottom 3 Pill Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 pb-2 sm:pb-3 w-full">
-          {/* Button 1: Cretificates */}
-          <button
-            onClick={() => {
-              soundManager.playClick();
-              setIsCertificatesOpen(true);
-            }}
-            className="btn-pill-green rounded-full px-5 py-2.5 sm:px-6 sm:py-2.5 flex items-center space-x-2 text-white font-medium text-xs sm:text-sm tracking-wide cursor-pointer"
-          >
-            {/* Certificate Icon with Star */}
-            <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-amber-300 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              <polygon points="12,15 13,17 15,17 13.5,18.5 14,21 12,19.5 10,21 10.5,18.5 9,17 11,17" fill="#fcd34d" stroke="none" />
-            </svg>
-            <span>Cretificates</span>
-          </button>
-
           {/* Button 2: How To Play */}
           <button
             onClick={() => {
@@ -111,21 +118,6 @@ export const HomeScreen = ({ onPlayNow, isMuted, onToggleMute }) => {
               ?
             </span>
             <span>How To Play</span>
-          </button>
-
-          {/* Button 3: Quit To Home */}
-          <button
-            onClick={() => {
-              soundManager.playClick();
-              setIsQuitOpen(true);
-            }}
-            className="btn-pill-green rounded-full px-5 py-2.5 sm:px-6 sm:py-2.5 flex items-center space-x-2 text-white font-medium text-xs sm:text-sm tracking-wide cursor-pointer"
-          >
-            {/* Home Icon */}
-            <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-            <span>Quit To Home</span>
           </button>
         </div>
       </div>

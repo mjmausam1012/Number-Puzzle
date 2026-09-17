@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { soundManager } from '../utils/audio';
-import bgImg from '../assets/bg-img.png';
-import nebuloidLogo from '../assets/nebuloid-vertical.png';
+import React, { useState, useEffect, useRef } from "react";
+import { soundManager } from "../utils/audio";
+import bgImg from "../assets/bg-img.png";
+import nebuloidLogo from "../assets/logo_black_horizental.png";
 
-export const PlayerSetup = ({ onBack, onContinue, initialName = '' }) => {
+export const PlayerSetup = ({ onBack, onContinue, initialName = "" }) => {
   const [playerName, setPlayerName] = useState(() => {
-    return initialName || localStorage.getItem('player_name') || '';
+    return initialName || localStorage.getItem("player_name") || "";
   });
   const inputRef = useRef(null);
 
@@ -19,13 +19,13 @@ export const PlayerSetup = ({ onBack, onContinue, initialName = '' }) => {
   const handleFormSubmit = (e) => {
     e?.preventDefault();
     soundManager.playClick();
-    const trimmed = playerName.trim() || 'Player 1';
-    localStorage.setItem('player_name', trimmed);
+    const trimmed = playerName.trim() || "Player 1";
+    localStorage.setItem("player_name", trimmed);
     onContinue(trimmed);
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleFormSubmit(e);
     }
   };
@@ -38,16 +38,22 @@ export const PlayerSetup = ({ onBack, onContinue, initialName = '' }) => {
       {/* Subtle Overlay */}
       <div className="absolute inset-0 bg-black/10 pointer-events-none z-0" />
 
-      {/* Nebuloid Branding Logo */}
-      <div className="absolute top-6 left-6 z-30">
-        <img src={nebuloidLogo} alt="Nebuloid" className="h-20 sm:h-26 md:h-30 object-contain drop-shadow-md" />
-      </div>
-
       {/* ───────────────────────────────────────────────────────────── */}
       {/* FROSTED GLASS MODAL CARD */}
       {/* ───────────────────────────────────────────────────────────── */}
       <div className="relative z-10 w-[92%] sm:w-[84%] md:w-[70%] max-w-2xl rounded-[28px] sm:rounded-[36px] glass-start-card py-10 sm:py-12 md:py-14 px-6 sm:px-12 text-center animate-fadeIn shadow-2xl">
-        <form onSubmit={handleFormSubmit} className="flex flex-col items-center">
+        {/* Nebuloid Branding Logo */}
+        <div className="relative flex items-center justify-center">
+          <img
+            src={nebuloidLogo}
+            alt="Nebuloid"
+            className="h-20 object-contain"
+          />
+        </div>
+        <form
+          onSubmit={handleFormSubmit}
+          className="flex flex-col items-center"
+        >
           {/* Eyebrow / Subtitle */}
           <div className="text-gray-900 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase mb-1">
             REGISTRATION

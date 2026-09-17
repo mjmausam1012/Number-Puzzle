@@ -1,64 +1,60 @@
-import React from 'react';
-import { soundManager } from '../utils/audio';
-import bgImg from '../assets/bg-img.png';
-import nebuloidLogo from '../assets/nebuloid-vertical.png';
+import React from "react";
+import { soundManager } from "../utils/audio";
+import bgImg from "../assets/bg-img.png";
+import nebuloidLogo from "../assets/logo_black_horizental.png";
 
 const Level = ({ onBack, onSelectLevel }) => {
   const levels = [
     {
-      id: 'easy',
-      name: 'EASY',
+      id: "easy",
+      name: "EASY",
       moves: 20,
       startNum: 1,
-      rangeLabel: '1 to 8',
-      subtitle: 'Gentle & Relaxed',
-      badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
-      textColor: 'text-emerald-700',
-      tileEmptyColor: 'bg-emerald-600',
-      btnBg: 'bg-[#226e17] hover:bg-[#2b881d]',
-      stars: '⭐',
-      bullets: [
-        'Numbers 1 through 8',
-        '20 moves limit',
-        'Ideal for beginners'
-      ]
+      rangeLabel: "1 to 8",
+      subtitle: "Gentle & Relaxed",
+      badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
+      textColor: "text-emerald-700",
+      tileEmptyColor: "bg-emerald-600",
+      btnBg: "bg-[#226e17] hover:bg-[#2b881d]",
+      stars: "⭐",
+      bullets: ["Numbers 1 through 8", "20 moves limit", "Ideal for beginners"],
     },
     {
-      id: 'medium',
-      name: 'MEDIUM',
+      id: "medium",
+      name: "MEDIUM",
       moves: 50,
       startNum: 11,
-      rangeLabel: '11 to 18',
-      subtitle: 'Balanced Challenge',
-      badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
-      textColor: 'text-amber-700',
-      tileEmptyColor: 'bg-amber-500',
-      btnBg: 'bg-[#1e6116] hover:bg-[#267b1c]',
-      stars: '⭐⭐',
+      rangeLabel: "11 to 18",
+      subtitle: "Balanced Challenge",
+      badgeColor: "bg-amber-100 text-amber-800 border-amber-300",
+      textColor: "text-amber-700",
+      tileEmptyColor: "bg-amber-500",
+      btnBg: "bg-[#1e6116] hover:bg-[#267b1c]",
+      stars: "⭐⭐",
       bullets: [
-        'Numbers 11 through 18',
-        '50 moves limit',
-        'Tests logic & foresight'
-      ]
+        "Numbers 11 through 18",
+        "50 moves limit",
+        "Tests logic & foresight",
+      ],
     },
     {
-      id: 'hard',
-      name: 'HARD',
+      id: "hard",
+      name: "HARD",
       moves: 95,
       startNum: 21,
-      rangeLabel: '21 to 28',
-      subtitle: 'Master Level',
-      badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
-      textColor: 'text-rose-700',
-      tileEmptyColor: 'bg-rose-600',
-      btnBg: 'bg-[#185312] hover:bg-[#206918]',
-      stars: '⭐⭐⭐',
+      rangeLabel: "21 to 28",
+      subtitle: "Master Level",
+      badgeColor: "bg-rose-100 text-rose-800 border-rose-300",
+      textColor: "text-rose-700",
+      tileEmptyColor: "bg-rose-600",
+      btnBg: "bg-[#185312] hover:bg-[#206918]",
+      stars: "⭐⭐⭐",
       bullets: [
-        'Numbers 21 through 28',
-        '95 moves limit',
-        'Complex slide patterns'
-      ]
-    }
+        "Numbers 21 through 28",
+        "95 moves limit",
+        "Complex slide patterns",
+      ],
+    },
   ];
 
   return (
@@ -69,15 +65,18 @@ const Level = ({ onBack, onSelectLevel }) => {
       {/* Subtle Overlay */}
       <div className="absolute inset-0 bg-black/10 pointer-events-none z-0" />
 
-      {/* Nebuloid Branding Logo */}
-      <div className="absolute top-6 left-6 z-30">
-        <img src={nebuloidLogo} alt="Nebuloid" className="h-20 sm:h-26 md:h-30 object-contain drop-shadow-md" />
-      </div>
-
       {/* ───────────────────────────────────────────────────────────── */}
       {/* FROSTED GLASS CENTER MODAL */}
       {/* ───────────────────────────────────────────────────────────── */}
       <div className="relative z-10 w-[96%] sm:w-[92%] md:w-[88%] max-w-5xl rounded-[28px] sm:rounded-[36px] glass-start-card py-6 sm:py-9 px-4 sm:px-8 text-center animate-fadeIn shadow-2xl flex flex-col justify-between">
+        {/* Nebuloid Branding Logo */}
+        <div className="relative top-0 flex items-center justify-center">
+          <img
+            src={nebuloidLogo}
+            alt="Nebuloid"
+            className="h-18 object-contain"
+          />
+        </div>
         {/* Header Section */}
         <div className="mb-5 sm:mb-6">
           <div className="text-gray-900 text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase mb-1">
@@ -101,7 +100,9 @@ const Level = ({ onBack, onSelectLevel }) => {
               <div>
                 {/* Level Title & Star Rating */}
                 <div className="flex items-center justify-between mb-1">
-                  <span className={`font-sans text-2xl font-black tracking-wider uppercase ${lvl.textColor}`}>
+                  <span
+                    className={`font-sans text-2xl font-black tracking-wider uppercase ${lvl.textColor}`}
+                  >
                     {lvl.name}
                   </span>
                   <span className="text-sm">{lvl.stars}</span>
@@ -113,7 +114,9 @@ const Level = ({ onBack, onSelectLevel }) => {
 
                 {/* Range & Moves Badges */}
                 <div className="flex items-center space-x-2 mb-4">
-                  <span className={`text-[10px] font-sans font-bold px-2.5 py-0.5 rounded-full border ${lvl.badgeColor}`}>
+                  <span
+                    className={`text-[10px] font-sans font-bold px-2.5 py-0.5 rounded-full border ${lvl.badgeColor}`}
+                  >
                     Range: {lvl.rangeLabel}
                   </span>
                   <span className="text-[10px] font-sans font-bold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
@@ -124,25 +127,31 @@ const Level = ({ onBack, onSelectLevel }) => {
                 {/* Mini 3x3 Visual Preview */}
                 <div className="flex justify-center mb-4">
                   <div className="p-1 rounded-xl bg-gray-100 border border-gray-200 grid grid-cols-3 gap-1 w-24 h-24 shadow-inner">
-                    {[...Array(8)].map((_, i) => lvl.startNum + i).concat(null).map((n, idx) => (
-                      <div
-                        key={idx}
-                        className={`flex items-center justify-center rounded-md font-sans font-black text-xs ${
-                          n === null
-                            ? `${lvl.tileEmptyColor} text-white shadow-xs`
-                            : 'bg-white text-gray-900 border border-gray-200 shadow-2xs'
-                        }`}
-                      >
-                        {n !== null ? n : '●'}
-                      </div>
-                    ))}
+                    {[...Array(8)]
+                      .map((_, i) => lvl.startNum + i)
+                      .concat(null)
+                      .map((n, idx) => (
+                        <div
+                          key={idx}
+                          className={`flex items-center justify-center rounded-md font-sans font-black text-xs ${
+                            n === null
+                              ? `${lvl.tileEmptyColor} text-white shadow-xs`
+                              : "bg-white text-gray-900 border border-gray-200 shadow-2xs"
+                          }`}
+                        >
+                          {n !== null ? n : "●"}
+                        </div>
+                      ))}
                   </div>
                 </div>
 
                 {/* Feature Bullet Points */}
                 <div className="space-y-1.5 text-left mb-5">
                   {lvl.bullets.map((txt, i) => (
-                    <div key={i} className="flex items-center space-x-2 text-xs text-gray-600 font-sans">
+                    <div
+                      key={i}
+                      className="flex items-center space-x-2 text-xs text-gray-600 font-sans"
+                    >
                       <span className={`${lvl.textColor} font-bold`}>✓</span>
                       <span>{txt}</span>
                     </div>

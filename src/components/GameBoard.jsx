@@ -1,24 +1,27 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { soundManager } from '../utils/audio';
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { soundManager } from "../utils/audio";
 import {
   canMoveTile,
   moveTile,
   isSolved,
   generateSolvableBoard,
-  getNextHintTile
-} from '../utils/puzzleLogic';
-import bgImg from '../assets/bg-img.png';
+  getNextHintTile,
+} from "../utils/puzzleLogic";
+import bgImg from "../assets/bg-img.png";
+import nebuloidLogo from "../assets/nebuloid-vertical.png";
 
 export const GameBoard = ({
   onBackToMenu,
-  level = 'easy',
+  level = "easy",
   levelMoves = 20,
   startNum = 1,
   isMuted,
   onToggleMute,
-  playerName = 'Player 1'
+  playerName = "Player 1",
 }) => {
-  const [board, setBoard] = useState(() => generateSolvableBoard(levelMoves, startNum));
+  const [board, setBoard] = useState(() =>
+    generateSolvableBoard(levelMoves, startNum),
+  );
   const [moves, setMoves] = useState(0);
   const [elapsedTenths, setElapsedTenths] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
@@ -27,7 +30,7 @@ export const GameBoard = ({
   const [history, setHistory] = useState([]);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(() => {
-    const saved = localStorage.getItem('puzzle_streak');
+    const saved = localStorage.getItem("puzzle_streak");
     return saved ? parseInt(saved, 10) : 0;
   });
   const [bestScore, setBestScore] = useState(() => {
@@ -39,23 +42,26 @@ export const GameBoard = ({
 
   // Level label
   const getLevelLabel = () => {
-    if (level === 'easy') return 'LEVEL 1 - EASY';
-    if (level === 'medium') return 'LEVEL 2 - MEDIUM';
-    if (level === 'hard') return 'LEVEL 3 - HARD';
+    if (level === "easy") return "LEVEL 1 - EASY";
+    if (level === "medium") return "LEVEL 2 - MEDIUM";
+    if (level === "hard") return "LEVEL 3 - HARD";
     return `LEVEL - ${level.toUpperCase()}`;
   };
 
   // Initialize new game
-  const initGame = useCallback((scrambleSteps = levelMoves) => {
-    const newBoard = generateSolvableBoard(scrambleSteps, startNum);
-    setBoard(newBoard);
-    setMoves(0);
-    setElapsedTenths(0);
-    setIsRunning(true);
-    setHasWon(false);
-    setHintTile(null);
-    setHistory([]);
-  }, [levelMoves, startNum]);
+  const initGame = useCallback(
+    (scrambleSteps = levelMoves) => {
+      const newBoard = generateSolvableBoard(scrambleSteps, startNum);
+      setBoard(newBoard);
+      setMoves(0);
+      setElapsedTenths(0);
+      setIsRunning(true);
+      setHasWon(false);
+      setHintTile(null);
+      setHistory([]);
+    },
+    [levelMoves, startNum],
+  );
 
   // Timer effect (updates every 100ms for authentic tenths-of-second display)
   useEffect(() => {
@@ -68,45 +74,56 @@ export const GameBoard = ({
   }, [isRunning, hasWon]);
 
   // Handle tile click
-  const handleTileClick = useCallback((index) => {
-    if (hasWon) return;
+  const handleTileClick = useCallback(
+    (index) => {
+      if (hasWon) return;
 
-    if (!canMoveTile(index, board)) {
-      soundManager.playInvalid();
-      return;
-    }
-
-    soundManager.playSlide();
-    setHistory((prev) => [...prev, board]);
-    const nextBoard = moveTile(index, board);
-    setBoard(nextBoard);
-    const newMoves = moves + 1;
-    setMoves(newMoves);
-    setHintTile(null);
-
-    // Check win condition
-    if (isSolved(nextBoard, startNum)) {
-      setIsRunning(false);
-      setHasWon(true);
-      soundManager.playWin();
-
-      // Calculate score & streak
-      const totalSeconds = elapsedTenths / 10;
-      const calculatedScore = Math.max(150, Math.round(1000 - newMoves * 12 - totalSeconds * 4));
-      setScore(calculatedScore);
-
-      const newStreak = streak + 1;
-      setStreak(newStreak);
-      localStorage.setItem('puzzle_streak', newStreak.toString());
-
-      // Update best moves
-      const currentBest = localStorage.getItem(`best_moves_${level}_${startNum}`);
-      if (!currentBest || newMoves < parseInt(currentBest, 10)) {
-        localStorage.setItem(`best_moves_${level}_${startNum}`, newMoves.toString());
-        setBestScore(newMoves);
+      if (!canMoveTile(index, board)) {
+        soundManager.playInvalid();
+        return;
       }
-    }
-  }, [board, hasWon, moves, level, startNum, elapsedTenths, streak]);
+
+      soundManager.playSlide();
+      setHistory((prev) => [...prev, board]);
+      const nextBoard = moveTile(index, board);
+      setBoard(nextBoard);
+      const newMoves = moves + 1;
+      setMoves(newMoves);
+      setHintTile(null);
+
+      // Check win condition
+      if (isSolved(nextBoard, startNum)) {
+        setIsRunning(false);
+        setHasWon(true);
+        soundManager.playWin();
+
+        // Calculate score & streak
+        const totalSeconds = elapsedTenths / 10;
+        const calculatedScore = Math.max(
+          150,
+          Math.round(1000 - newMoves * 12 - totalSeconds * 4),
+        );
+        setScore(calculatedScore);
+
+        const newStreak = streak + 1;
+        setStreak(newStreak);
+        localStorage.setItem("puzzle_streak", newStreak.toString());
+
+        // Update best moves
+        const currentBest = localStorage.getItem(
+          `best_moves_${level}_${startNum}`,
+        );
+        if (!currentBest || newMoves < parseInt(currentBest, 10)) {
+          localStorage.setItem(
+            `best_moves_${level}_${startNum}`,
+            newMoves.toString(),
+          );
+          setBestScore(newMoves);
+        }
+      }
+    },
+    [board, hasWon, moves, level, startNum, elapsedTenths, streak],
+  );
 
   // Undo move
   const handleUndo = useCallback(() => {
@@ -142,24 +159,24 @@ export const GameBoard = ({
       let targetIdx = -1;
 
       switch (e.key) {
-        case 'ArrowUp':
-        case 'w':
-        case 'W':
+        case "ArrowUp":
+        case "w":
+        case "W":
           if (emptyRow < 2) targetIdx = (emptyRow + 1) * 3 + emptyCol;
           break;
-        case 'ArrowDown':
-        case 's':
-        case 'S':
+        case "ArrowDown":
+        case "s":
+        case "S":
           if (emptyRow > 0) targetIdx = (emptyRow - 1) * 3 + emptyCol;
           break;
-        case 'ArrowLeft':
-        case 'a':
-        case 'A':
+        case "ArrowLeft":
+        case "a":
+        case "A":
           if (emptyCol < 2) targetIdx = emptyRow * 3 + (emptyCol + 1);
           break;
-        case 'ArrowRight':
-        case 'd':
-        case 'D':
+        case "ArrowRight":
+        case "d":
+        case "D":
           if (emptyCol > 0) targetIdx = emptyRow * 3 + (emptyCol - 1);
           break;
         default:
@@ -172,8 +189,8 @@ export const GameBoard = ({
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [board, hasWon, handleTileClick]);
 
   return (
@@ -184,11 +201,14 @@ export const GameBoard = ({
       {/* Subtle darkening overlay for lush contrast */}
       <div className="absolute inset-0 bg-black/15 pointer-events-none z-0" />
 
+      <div className="absolute top-6 left-6 z-30">
+        <img src={nebuloidLogo} alt="" className="h-30" />
+      </div>
+
       {/* ───────────────────────────────────────────────────────────── */}
       {/* FROSTED GLASS CENTER MODAL / GAME FRAME */}
       {/* ───────────────────────────────────────────────────────────── */}
       <div className="relative z-10 w-[96%] sm:w-[92%] md:w-[88%] max-w-5xl h-[92vh] max-h-[820px] min-h-[580px] rounded-[28px] sm:rounded-[36px] glass-game-frame flex flex-col justify-between items-center py-5 sm:py-7 px-4 sm:px-8 shadow-2xl animate-fadeIn">
-        
         {/* TOP NAVIGATION BAR (Matching screenshot pills) */}
         <header className="w-full flex items-center justify-between gap-2 sm:gap-4 shrink-0">
           {/* Left Pill: Level indicator */}
@@ -212,7 +232,13 @@ export const GameBoard = ({
 
             {/* Live Clock Timer */}
             <div className="flex items-center space-x-1.5 font-black text-white">
-              <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+              <svg
+                className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                viewBox="0 0 24 24"
+              >
                 <circle cx="12" cy="12" r="9" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
@@ -238,16 +264,40 @@ export const GameBoard = ({
                 onToggleMute();
               }}
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full pill-green-border flex items-center justify-center text-white cursor-pointer transition-transform hover:scale-105 active:scale-95 shrink-0"
-              title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
+              title={isMuted ? "Unmute Audio" : "Mute Audio"}
             >
               {!isMuted ? (
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z" />
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"
+                  />
                 </svg>
               ) : (
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-red-200" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-red-200"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"
+                  />
                 </svg>
               )}
             </button>
@@ -290,11 +340,13 @@ export const GameBoard = ({
                     onClick={() => handleTileClick(idx)}
                     disabled={hasWon}
                     className={`tile-cream-3d relative flex items-center justify-center cursor-pointer select-none w-full h-full font-sans font-black ${
-                      startNum >= 10 ? 'text-3xl sm:text-4xl md:text-5xl' : 'text-4xl sm:text-5xl md:text-6xl'
+                      startNum >= 10
+                        ? "text-3xl sm:text-4xl md:text-5xl"
+                        : "text-4xl sm:text-5xl md:text-6xl"
                     } text-[#0a0a0a] ${
-                      isHint ? 'hint-highlight ring-4 ring-[#00b84c]' : ''
+                      isHint ? "hint-highlight ring-4 ring-[#00b84c]" : ""
                     } ${
-                      canMove ? 'cursor-pointer' : 'cursor-default opacity-95'
+                      canMove ? "cursor-pointer" : "cursor-default opacity-95"
                     }`}
                   >
                     {value}
@@ -322,8 +374,8 @@ export const GameBoard = ({
                 disabled={history.length === 0 || hasWon}
                 className={`py-2.5 sm:py-3 font-sans font-black text-xs sm:text-sm tracking-wider uppercase transition-all ${
                   history.length === 0 || hasWon
-                    ? 'action-btn-taupe cursor-not-allowed opacity-80'
-                    : 'action-btn-cream cursor-pointer'
+                    ? "action-btn-taupe cursor-not-allowed opacity-80"
+                    : "action-btn-cream cursor-pointer"
                 }`}
               >
                 UNDO
@@ -380,16 +432,28 @@ export const GameBoard = ({
             {/* Stats Grid */}
             <div className="grid grid-cols-3 gap-2.5 mb-6">
               <div className="p-3 rounded-2xl bg-white/85 border border-white/60">
-                <span className="block text-[10px] font-sans font-bold text-gray-500 tracking-wider">MOVES</span>
-                <span className="text-2xl font-sans font-black text-gray-900">{moves}</span>
+                <span className="block text-[10px] font-sans font-bold text-gray-500 tracking-wider">
+                  MOVES
+                </span>
+                <span className="text-2xl font-sans font-black text-gray-900">
+                  {moves}
+                </span>
               </div>
               <div className="p-3 rounded-2xl bg-white/85 border border-white/60">
-                <span className="block text-[10px] font-sans font-bold text-gray-500 tracking-wider">TIME</span>
-                <span className="text-2xl font-sans font-black text-emerald-700">{(elapsedTenths / 10).toFixed(1)}s</span>
+                <span className="block text-[10px] font-sans font-bold text-gray-500 tracking-wider">
+                  TIME
+                </span>
+                <span className="text-2xl font-sans font-black text-emerald-700">
+                  {(elapsedTenths / 10).toFixed(1)}s
+                </span>
               </div>
               <div className="p-3 rounded-2xl bg-white/85 border border-white/60">
-                <span className="block text-[10px] font-sans font-bold text-gray-500 tracking-wider">SCORE</span>
-                <span className="text-2xl font-sans font-black text-amber-600">{score}</span>
+                <span className="block text-[10px] font-sans font-bold text-gray-500 tracking-wider">
+                  SCORE
+                </span>
+                <span className="text-2xl font-sans font-black text-amber-600">
+                  {score}
+                </span>
               </div>
             </div>
 
